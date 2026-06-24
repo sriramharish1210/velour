@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VELOUR. — Mumbai's Luxury Salon District</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --claret:#5C1A2E;
+  --gold:#C9A96E;
+  --gold-light:#E8D5A3;
+  --cream:#F5F0E8;
+  --ink:#120E0B;
+  --ink2:#1C1510;
+  --ink3:#251A12;
+  --border:rgba(201,169,110,0.13);
+  --muted:rgba(245,240,232,0.5);
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:'Manrope',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ══ PRELOADER ══ */
+#preloader{position:fixed;inset:0;z-index:8000;display:flex;align-items:center;justify-content:center}
+.pre-bg{position:absolute;inset:0;background:var(--ink)}
+.pre-content{position:relative;z-index:1;text-align:center}
+.pre-word{font-family:'Fraunces',serif;font-size:clamp(3.5rem,10vw,8rem);font-weight:300;color:var(--cream);letter-spacing:0.3em;opacity:0;animation:pIn 0.9s 0.2s forwards}
+.pre-tagline{font-family:'Manrope',sans-serif;font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);opacity:0;margin-top:10px;animation:pIn 0.7s 0.7s forwards}
+.pre-bar{width:200px;height:1px;background:rgba(201,169,110,0.15);margin:28px auto 12px;overflow:hidden}
+.pre-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width 0.05s linear}
+.pre-num{font-family:'Fraunces',serif;font-size:1rem;color:var(--gold);opacity:0.6;letter-spacing:0.1em}
+.pre-exit{animation:pOut 0.7s forwards}
+#preloader.gone{display:none}
+@keyframes pIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pOut{from{opacity:1}to{opacity:0}}
+
+/* ══ NAV ══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:28px 52px;opacity:0;transition:background 0.5s,padding 0.4s,border-color 0.5s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(18,14,11,0.96);backdrop-filter:blur(24px);padding:16px 52px;border-bottom-color:var(--border)}
+.nav-logo{font-family:'Fraunces',serif;font-weight:300;font-size:20px;letter-spacing:0.22em;color:var(--cream);text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:38px;list-style:none}
+.nav-links a{font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-light);text-decoration:none;opacity:0.75;transition:opacity 0.3s,color 0.3s;position:relative;padding-bottom:3px}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width 0.35s}
+.nav-links a:hover,.nav-links a.active{opacity:1;color:var(--gold)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-mobile-menu{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-mobile-menu span{display:block;width:22px;height:1px;background:var(--gold-light);transition:all 0.3s}
+
+/* ══ HERO ══ */
+.hero{position:relative;height:260vh}
+.hero-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+.hero-img{width:100%;height:100%;object-fit:cover;object-position:center;transform-origin:center;will-change:transform;display:block}
+.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(18,14,11,0.6) 100%),linear-gradient(to bottom,rgba(18,14,11,0.25) 0%,transparent 28%,transparent 55%,rgba(18,14,11,0.78) 100%);pointer-events:none}
+.hero-content{position:absolute;bottom:16vh;left:0;right:0;text-align:center;pointer-events:none;z-index:10}
+.hero-eyebrow{font-size:9.5px;letter-spacing:0.38em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;opacity:0}
+.hero-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(48px,7.5vw,92px);line-height:0.95;letter-spacing:0.04em;color:var(--cream);text-transform:uppercase;margin-bottom:22px;opacity:0}
+.hero-title em{font-style:italic;color:var(--gold-light)}
+.hero-sub{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold-light);opacity:0}
+.hero-rule{width:1px;height:56px;background:linear-gradient(to bottom,var(--gold),transparent);margin:26px auto 0;opacity:0}
+.scroll-enter{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:11px;z-index:10;opacity:0;white-space:nowrap}
+.scroll-enter-label{font-size:8.5px;letter-spacing:0.44em;text-transform:uppercase;color:var(--gold)}
+.scroll-enter-track{width:1px;height:50px;background:rgba(201,169,110,0.2);position:relative;overflow:hidden}
+.scroll-enter-thumb{position:absolute;top:-100%;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:thumbDrop 2s ease-in-out infinite}
+@keyframes thumbDrop{0%{top:-100%}60%{top:100%}100%{top:100%}}
+
+/* ══════════════════════════════════════════════════
+   SECTION 2 & 3 — CARD DEAL SECTIONS
+   Left: fixed text. Right: cards deal in like Pieter.
+   Cards slide up from bottom-right with a tilt,
+   land on top of previous card. Deck builds up.
+══════════════════════════════════════════════════ */
+.deal-outer{
+  position:relative;
+  height:500vh;
+}
+.deal-outer.services-outer{
+  background:var(--ink2);
+}
+.deal-inner{
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  align-items:stretch;
+}
+
+/* LEFT — text panel */
+.deal-left{
+  width:45%;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:0 60px 0 72px;
+  position:relative;
+}
+.deal-left::after{
+  content:'';position:absolute;right:0;top:12%;bottom:12%;
+  width:1px;background:linear-gradient(to bottom,transparent,var(--border),transparent);
+}
+.deal-eyebrow{font-size:9px;letter-spacing:0.38em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0.8}
+.deal-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(2.4rem,3.8vw,3.8rem);line-height:1.05;color:var(--cream);margin-bottom:22px;letter-spacing:-0.01em}
+.deal-title em{font-style:italic;color:var(--gold)}
+.deal-desc{font-size:13.5px;line-height:1.9;color:var(--muted);max-width:340px;margin-bottom:44px;letter-spacing:0.01em}
+
+/* Pieter-style underline CTA button */
+.deal-cta{
+  display:inline-flex;align-items:center;gap:16px;
+  font-size:10px;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--gold);background:none;border:none;
+  font-family:'Manrope',sans-serif;cursor:pointer;
+  position:relative;padding-bottom:5px;width:fit-content;
+  text-decoration:none;
+}
+.deal-cta::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:100%;height:1px;background:var(--gold);
+  transform:scaleX(1);transform-origin:left;transition:transform 0.4s;
+}
+.deal-cta:hover::after{transform:scaleX(0.3)}
+.deal-cta .cta-arrow{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border:1px solid rgba(201,169,110,0.4);
+  border-radius:50%;transition:all 0.4s;flex-shrink:0;
+}
+.deal-cta:hover .cta-arrow{background:var(--gold);border-color:var(--gold)}
+.deal-cta:hover .cta-arrow svg{stroke:var(--ink)}
+
+/* counter bottom-left */
+.deal-counter{
+  position:absolute;bottom:44px;left:72px;
+  display:flex;align-items:baseline;gap:10px;
+}
+.deal-count-current{font-family:'Fraunces',serif;font-size:3.5rem;font-weight:300;color:rgba(201,169,110,0.22);line-height:1;transition:all 0.5s}
+.deal-count-current.lit{color:rgba(201,169,110,0.6)}
+.deal-count-sep{font-size:11px;color:var(--border);letter-spacing:0.1em}
+.deal-count-total{font-size:11px;color:var(--muted);letter-spacing:0.12em}
+
+/* RIGHT — card area */
+.deal-right{
+  flex:1;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* ══ THE CARDS ══
+   All 3 absolutely positioned in centre of deal-right.
+   JS controls transform: translateY + rotate.
+   Cards build up as a physical deck — each one lands
+   slightly offset and tilted, previous stays visible.
+*/
+.deal-card{
+  position:absolute;
+  width:min(380px, 80%);
+  /* height is auto — content driven */
+  background:var(--ink3);
+  border:1px solid rgba(201,169,110,0.18);
+  border-radius:18px;
+  padding:44px 40px 40px;
+  will-change:transform;
+  transform-origin:bottom right;
+  box-shadow:0 24px 64px rgba(0,0,0,0.6);
+  /* start position set by JS */
+}
+
+/* Card content — typographic, Pieter-style */
+.dc-num{
+  font-family:'Fraunces',serif;font-size:0.78rem;font-weight:300;
+  color:var(--gold);opacity:0.5;letter-spacing:0.22em;
+  margin-bottom:32px;display:block;
+}
+.dc-title{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:clamp(2rem,4vw,2.8rem);
+  line-height:1.0;letter-spacing:-0.01em;
+  color:var(--cream);margin-bottom:16px;
+  text-transform:uppercase;
+}
+.dc-title em{font-style:italic;color:var(--gold);text-transform:none}
+.dc-sub{
+  font-size:12px;line-height:1.75;color:var(--muted);
+  letter-spacing:0.02em;margin-bottom:36px;
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+}
+.dc-detail{
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold);opacity:0.7;
+  border-top:1px solid var(--border);
+  padding-top:20px;
+}
+.dc-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:0.6;flex-shrink:0}
+
+/* book now on salon cards */
+.dc-book{
+  margin-top:24px;
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);background:none;
+  border:1px solid rgba(201,169,110,0.3);
+  border-radius:50px;padding:10px 20px;
+  font-family:'Manrope',sans-serif;cursor:pointer;
+  transition:all 0.35s;
+}
+.dc-book:hover{background:var(--claret);border-color:var(--claret);color:var(--gold-light)}
+
+/* stars row */
+.dc-stars{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:20px;
+}
+.dc-stars-val{font-size:14px;color:var(--gold);letter-spacing:2px}
+.dc-stars-label{font-size:10px;color:var(--muted);letter-spacing:0.1em}
+
+/* ══ ALL SALONS GRID ══ */
+#all-salons{
+  display:none;background:var(--ink);
+  padding:90px 72px 100px;
+  border-top:1px solid var(--border);
+  scroll-margin-top:80px;
+}
+#all-salons.visible{display:block}
+.as-header{text-align:center;margin-bottom:56px}
+.as-eyebrow{font-size:9px;letter-spacing:0.38em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.as-title{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(28px,4vw,48px);color:var(--cream)}
+.as-title em{font-style:italic;color:var(--gold)}
+.as-back{display:inline-flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);background:none;border:none;font-family:'Manrope',sans-serif;cursor:pointer;opacity:0.7;transition:opacity 0.3s;margin-bottom:40px}
+.as-back:hover{opacity:1}
+.as-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.as-card{background:var(--ink2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color 0.35s,transform 0.35s;cursor:default}
+.as-card:hover{border-color:rgba(201,169,110,0.42);transform:translateY(-4px)}
+.as-img-wrap{height:180px;overflow:hidden;position:relative}
+.as-img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.84) saturate(0.8);transition:transform 0.5s}
+.as-card:hover .as-img{transform:scale(1.04)}
+.as-badge{position:absolute;top:12px;left:12px;font-size:8px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:50px;background:rgba(92,26,46,0.9);color:var(--gold-light);border:1px solid rgba(201,169,110,0.2);backdrop-filter:blur(8px)}
+.as-body{padding:22px}
+.as-name{font-family:'Fraunces',serif;font-weight:300;font-size:1.2rem;color:var(--cream);margin-bottom:6px}
+.as-loc{font-size:10.5px;color:var(--gold);opacity:0.7;display:flex;align-items:center;gap:4px;margin-bottom:10px;letter-spacing:0.04em}
+.as-stars{margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.as-stars-val{font-size:12px;color:var(--gold);letter-spacing:1.5px}
+.as-stars-label{font-size:10px;color:var(--muted)}
+.as-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
+.as-tag{font-size:8px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:50px;border:1px solid var(--border);color:var(--gold-light);opacity:0.6}
+.as-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border)}
+.as-price{font-size:10.5px;color:var(--muted)}
+.as-price strong{font-size:14px;color:var(--cream);font-weight:400}
+.as-book{background:none;border:1px solid rgba(201,169,110,0.35);border-radius:50px;padding:8px 18px;font-family:'Manrope',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);cursor:pointer;transition:all 0.3s}
+.as-book:hover{background:var(--claret);border-color:var(--claret);color:var(--gold-light)}
+
+/* ══ BOOKING MODAL ══ */
+.bmodal-wrap{position:fixed;inset:0;z-index:800;background:rgba(8,5,3,0.9);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.bmodal-wrap.open{opacity:1;pointer-events:all}
+.bmodal{background:var(--ink2);border:1px solid var(--border);border-radius:20px;width:100%;max-width:440px;padding:38px;position:relative;transform:translateY(20px) scale(0.97);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:0 40px 80px rgba(0,0,0,0.7)}
+.bmodal-wrap.open .bmodal{transform:none}
+.bm-x{position:absolute;top:18px;right:18px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--gold);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.25s}
+.bm-x:hover{background:var(--claret);border-color:var(--claret)}
+.bm-ey{font-size:8.5px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.bm-title{font-family:'Fraunces',serif;font-weight:300;font-size:1.6rem;color:var(--cream);margin-bottom:4px}
+.bm-sub{font-size:11px;color:var(--muted);margin-bottom:26px;letter-spacing:0.03em}
+.bm-field{margin-bottom:13px}
+.bm-field label{display:block;font-size:8.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.bm-field input,.bm-field select{width:100%;padding:11px 13px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:9px;color:var(--cream);font-family:'Manrope',sans-serif;font-size:13px;outline:none;transition:border-color 0.25s;-webkit-appearance:none}
+.bm-field input:focus,.bm-field select:focus{border-color:rgba(201,169,110,0.5)}
+.bm-field input::placeholder{color:rgba(245,240,232,0.28)}
+.bm-field select option{background:var(--ink2)}
+.bm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bm-confirm{width:100%;padding:13px;margin-top:8px;background:linear-gradient(135deg,var(--claret),#7A2040);border:none;border-radius:10px;color:var(--gold-light);font-family:'Manrope',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:all 0.3s}
+.bm-confirm:hover{filter:brightness(1.15);transform:translateY(-1px)}
+
+/* ══ ACCOUNT MODAL ══ */
+.amodal-wrap{position:fixed;inset:0;z-index:900;background:rgba(8,5,3,0.7);backdrop-filter:blur(14px);display:flex;align-items:flex-start;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;padding-top:64px;padding-right:52px}
+.amodal-wrap.open{opacity:1;pointer-events:all}
+.amodal{background:var(--ink2);border:1px solid var(--border);border-radius:16px;width:290px;overflow:hidden;transform:translateY(-10px) scale(0.97);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);box-shadow:0 24px 60px rgba(0,0,0,0.65)}
+.amodal-wrap.open .amodal{transform:none}
+.am-head{padding:20px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.am-head h3{font-family:'Fraunces',serif;font-weight:300;font-size:1.05rem;letter-spacing:0.05em;color:var(--cream)}
+.am-x{background:none;border:none;color:var(--gold);opacity:0.6;cursor:pointer;font-size:1rem;transition:opacity 0.2s}
+.am-x:hover{opacity:1}
+.am-tabs{display:flex;border-bottom:1px solid var(--border)}
+.am-tab{flex:1;padding:10px;font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;background:none;border:none;color:var(--gold-light);opacity:0.55;cursor:pointer;font-family:'Manrope',sans-serif;border-bottom:1.5px solid transparent;margin-bottom:-1px;transition:all 0.25s}
+.am-tab.active{color:var(--gold);opacity:1;border-bottom-color:var(--gold)}
+.am-body{padding:18px 22px 22px}
+.am-panel{display:none}
+.am-panel.active{display:block}
+.am-field{margin-bottom:13px}
+.am-field label{display:block;font-size:8.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.am-field input{width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;color:var(--cream);font-family:'Manrope',sans-serif;font-size:13px;outline:none;transition:border-color 0.25s}
+.am-field input:focus{border-color:rgba(201,169,110,0.5)}
+.am-field input::placeholder{color:rgba(245,240,232,0.28)}
+.am-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--claret),#7A2040);border:none;border-radius:8px;color:var(--gold-light);font-family:'Manrope',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;margin-top:4px}
+.am-btn:hover{filter:brightness(1.15)}
+.am-div{text-align:center;font-size:9px;color:rgba(201,169,110,0.35);margin:13px 0;letter-spacing:0.1em}
+.am-google{width:100%;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--gold-light);font-family:'Manrope',sans-serif;font-size:10px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:8px}
+.am-google:hover{border-color:var(--gold);color:var(--gold)}
+.am-note{font-size:8.5px;color:rgba(201,169,110,0.35);text-align:center;margin-top:12px;letter-spacing:0.06em}
+
+/* ══ MOBILE ══ */
+@media(max-width:768px){
+  /* Nav */
+  nav{padding:20px 24px}
+  nav.scrolled{padding:14px 24px}
+  .nav-links{display:none;position:fixed;inset:0;background:var(--ink);flex-direction:column;align-items:center;justify-content:center;gap:28px;z-index:400}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:1.2rem;letter-spacing:0.2em}
+  .nav-mobile-menu{display:flex}
+
+  /* Hero */
+  .hero{height:200vh}
+  .hero-title{font-size:clamp(36px,10vw,60px)}
+
+  /* Deal sections */
+  .deal-outer{height:auto}
+  .deal-inner{
+    position:relative;flex-direction:column;height:auto;
+    padding:80px 0 60px;
+  }
+  .deal-left{
+    width:100%;padding:0 24px 48px;
+  }
+  .deal-left::after{display:none}
+  .deal-title{font-size:clamp(2rem,8vw,2.8rem)}
+  .deal-desc{max-width:100%}
+  .deal-counter{position:relative;bottom:auto;left:auto;margin-top:28px}
+
+  .deal-right{
+    flex-direction:column;align-items:center;
+    gap:16px;padding:0 24px;
+    overflow:visible;
+    height:auto;
+  }
+
+  /* On mobile: cards stack vertically, no JS animation */
+  .deal-card{
+    position:relative !important;
+    transform:none !important;
+    width:100%;
+    max-width:420px;
+    margin-bottom:16px;
+  }
+
+  /* All salons */
+  #all-salons{padding:60px 24px 80px}
+  .as-grid{grid-template-columns:1fr;gap:16px}
+
+  /* Modals */
+  .amodal-wrap{padding-top:0;padding-right:0;align-items:flex-end;justify-content:center}
+  .amodal{width:100%;border-radius:20px 20px 0 0}
+  .bm-row{grid-template-columns:1fr}
+}
+
+@media(max-width:480px){
+  .hero-title{font-size:clamp(32px,9vw,48px)}
+  .deal-left{padding:0 20px 40px}
+  .deal-right{padding:0 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ░░ PRELOADER ░░ -->
+<div id="preloader">
+  <div class="pre-bg"></div>
+  <div class="pre-content">
+    <div class="pre-word">VELOUR.</div>
+    <div class="pre-tagline">Mumbai's Finest Salons</div>
+    <div class="pre-bar"><div class="pre-fill" id="preFill"></div></div>
+    <div class="pre-num" id="preNum">0</div>
+  </div>
+</div>
+
+<!-- ░░ NAV ░░ -->
+<nav id="mainNav">
+  <a class="nav-logo" href="#">VELOUR.</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#salons-section" id="navSalons">Salons</a></li>
+    <li><a href="#services-section" id="navServices">Services</a></li>
+    <li><a href="#">Locations</a></li>
+    <li><a href="#">Reserve</a></li>
+    <li><a href="#" id="navAccount">Account</a></li>
+  </ul>
+  <button class="nav-mobile-menu" id="mobileMenuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ░░ ACCOUNT MODAL ░░ -->
+<div class="amodal-wrap" id="accountModal">
+  <div class="amodal">
+    <div class="am-head">
+      <h3>Welcome Back</h3>
+      <button class="am-x" id="amClose">✕</button>
+    </div>
+    <div class="am-tabs">
+      <button class="am-tab active" data-tab="login">Sign In</button>
+      <button class="am-tab" data-tab="register">Register</button>
+    </div>
+    <div class="am-body">
+      <div class="am-panel active" id="tab-login">
+        <div class="am-field"><label>Email</label><input type="email" placeholder="priya@email.com"/></div>
+        <div class="am-field"><label>Password</label><input type="password" placeholder="••••••••"/></div>
+        <button class="am-btn" onclick="handleAuth()">Sign In to VELOUR.</button>
+        <div class="am-div">or</div>
+        <button class="am-google" onclick="handleAuth()">
+          <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#EA4335" d="M5.27 9.76A7.08 7.08 0 0 1 12 4.9c1.69 0 3.21.6 4.4 1.58l3.28-3.28A11.94 11.94 0 0 0 12 1C8.37 1 5.19 2.96 3.29 5.9l1.98 3.86z"/><path fill="#34A853" d="M16.04 18.01A7.07 7.07 0 0 1 12 19.1a7.08 7.08 0 0 1-6.72-4.84L3.3 18.1A11.95 11.95 0 0 0 12 23c2.93 0 5.61-1.06 7.68-2.81l-3.64-2.18z"/><path fill="#4A90D9" d="M19.68 20.19A11.94 11.94 0 0 0 23 12c0-.69-.07-1.37-.19-2H12v4.26h6.18a5.3 5.3 0 0 1-2.14 3.56l3.64 2.37z"/><path fill="#FBBC05" d="M5.28 14.26A7.1 7.1 0 0 1 4.9 12c0-.8.14-1.57.38-2.3L3.3 5.9A11.95 11.95 0 0 0 1 12c0 1.96.47 3.8 1.3 5.44l2.98-3.18z"/></svg>
+          Continue with Google
+        </button>
+        <p class="am-note">New to VELOUR.? Switch to Register.</p>
+      </div>
+      <div class="am-panel" id="tab-register">
+        <div class="am-field"><label>Full Name</label><input type="text" placeholder="Priya Mehta"/></div>
+        <div class="am-field"><label>Email</label><input type="email" placeholder="priya@email.com"/></div>
+        <div class="am-field"><label>Password</label><input type="password" placeholder="Create a password"/></div>
+        <button class="am-btn" onclick="handleAuth()">Create Account</button>
+        <p class="am-note">By signing up you agree to VELOUR.'s terms.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ HERO ░░ -->
+<section class="hero" id="heroSection">
+  <div class="hero-sticky">
+    <img class="hero-img" src="images/velour-wide.png" alt="VELOUR. Bandra West courtyard at golden hour">
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Mumbai's Luxury Salon District</p>
+      <h1 class="hero-title">Where <em>Beauty</em><br>Finds Its Home</h1>
+      <p class="hero-sub">Bandra West &nbsp;·&nbsp; Juhu &nbsp;·&nbsp; Worli</p>
+      <div class="hero-rule"></div>
+    </div>
+    <div class="scroll-enter">
+      <div class="scroll-enter-label">Scroll to Enter</div>
+      <div class="scroll-enter-track"><div class="scroll-enter-thumb"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ SECTION 2 — SALONS CARD DEAL ░░ -->
+<div class="deal-outer" id="salons-section">
+  <div class="deal-inner" id="salonsInner">
+
+    <div class="deal-left">
+      <p class="deal-eyebrow">Handpicked for Mumbai</p>
+      <h2 class="deal-title">Mumbai's Most<br><em>Celebrated</em><br>Salons</h2>
+      <p class="deal-desc">Every salon on VELOUR. is personally vetted for craft, atmosphere, and artistry. This is not a directory — it is an edit.</p>
+      <a href="#all-salons" class="deal-cta" id="exploreBtn">
+        Explore All Salons
+        <span class="cta-arrow">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+      <div class="deal-counter">
+        <div class="deal-count-current" id="salonsCountNum">01</div>
+        <span class="deal-count-sep">—</span>
+        <div class="deal-count-total">03</div>
+      </div>
+    </div>
+
+    <div class="deal-right" id="salonsRight">
+
+      <!-- Card 0 — starts in view -->
+      <div class="deal-card" id="spCard0">
+        <span class="dc-num">01 / 03</span>
+        <div class="dc-stars">
+          <span class="dc-stars-val">★★★★★</span>
+          <span class="dc-stars-label">4.9 · 312 reviews</span>
+        </div>
+        <div class="dc-title">Noir<br><em>Atelier</em></div>
+        <div class="dc-sub">Mumbai's most sought-after colour studio. Precision cuts, balayage, and keratin by master stylists.</div>
+        <div class="dc-detail">
+          <span class="dc-dot"></span>
+          Bandra West · From ₹1,200
+        </div>
+        <button class="dc-book" onclick="openBooking('Noir Atelier')">Book Now →</button>
+      </div>
+
+      <!-- Card 1 — starts below, deals in on scroll -->
+      <div class="deal-card" id="spCard1">
+        <span class="dc-num">02 / 03</span>
+        <div class="dc-stars">
+          <span class="dc-stars-val">★★★★★</span>
+          <span class="dc-stars-label">4.8 · 198 reviews</span>
+        </div>
+        <div class="dc-title">Sultana<br><em>Bloom</em></div>
+        <div class="dc-sub">Juhu's premiere bridal atelier. Transformations that begin weeks before the wedding and last a lifetime.</div>
+        <div class="dc-detail">
+          <span class="dc-dot"></span>
+          Juhu · From ₹8,500
+        </div>
+        <button class="dc-book" onclick="openBooking('Sultana Bloom')">Book Now →</button>
+      </div>
+
+      <!-- Card 2 — starts below card 1 -->
+      <div class="deal-card" id="spCard2">
+        <span class="dc-num">03 / 03</span>
+        <div class="dc-stars">
+          <span class="dc-stars-val">★★★★½</span>
+          <span class="dc-stars-label">4.7 · 241 reviews</span>
+        </div>
+        <div class="dc-title">Marine<br>Lines <em>&amp; Co.</em></div>
+        <div class="dc-sub">Where the sea breeze meets luxury skincare. Nails, spa, and facial treatments in a tranquil setting.</div>
+        <div class="dc-detail">
+          <span class="dc-dot"></span>
+          Marine Lines · From ₹950
+        </div>
+        <button class="dc-book" onclick="openBooking('Marine Lines & Co.')">Book Now →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ░░ ALL SALONS ░░ -->
+<div id="all-salons">
+  <button class="as-back" id="asBack">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Featured
+  </button>
+  <div class="as-header">
+    <p class="as-eyebrow">All Locations · Mumbai</p>
+    <h2 class="as-title">Every <em>Salon</em>, Curated</h2>
+  </div>
+  <div class="as-grid">
+    <div class="as-card"><div class="as-img-wrap"><img class="as-img" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" alt=""><span class="as-badge">Top Rated</span></div><div class="as-body"><div class="as-name">Noir Atelier</div><div class="as-loc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Bandra West</div><div class="as-stars"><span class="as-stars-val">★★★★★</span><span class="as-stars-label">4.9 · 312</span></div><div class="as-tags"><span class="as-tag">Hair Colour</span><span class="as-tag">Keratin</span></div><div class="as-footer"><div class="as-price">From <strong>₹1,200</strong></div><button class="as-book" onclick="openBooking('Noir Atelier')">Book Now</button></div></div></div>
+    <div class="as-card"><div class="as-img-wrap"><img class="as-img" src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" alt=""><span class="as-badge">Bridal</span></div><div class="as-body"><div class="as-name">Sultana Bloom</div><div class="as-loc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Juhu</div><div class="as-stars"><span class="as-stars-val">★★★★★</span><span class="as-stars-label">4.8 · 198</span></div><div class="as-tags"><span class="as-tag">Bridal</span><span class="as-tag">Draping</span></div><div class="as-footer"><div class="as-price">From <strong>₹8,500</strong></div><button class="as-book" onclick="openBooking('Sultana Bloom')">Book Now</button></div></div></div>
+    <div class="as-card"><div class="as-img-wrap"><img class="as-img" src="https://images.unsplash.com/photo-1487412947147-5cebf100d1c7?w=600&q=80" alt=""><span class="as-badge">Trending</span></div><div class="as-body"><div class="as-name">Marine Lines & Co.</div><div class="as-loc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Marine Lines</div><div class="as-stars"><span class="as-stars-val">★★★★½</span><span class="as-stars-label">4.7 · 241</span></div><div class="as-tags"><span class="as-tag">Nails</span><span class="as-tag">Spa</span></div><div class="as-footer"><div class="as-price">From <strong>₹950</strong></div><button class="as-book" onclick="openBooking('Marine Lines')">Book Now</button></div></div></div>
+    <div class="as-card"><div class="as-img-wrap"><img class="as-img" src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&q=80" alt=""><span class="as-badge">Men's</span></div><div class="as-body"><div class="as-name">Colaba & Curl</div><div class="as-loc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Colaba</div><div class="as-stars"><span class="as-stars-val">★★★★★</span><span class="as-stars-label">4.9 · 180</span></div><div class="as-tags"><span class="as-tag">Haircut</span><span class="as-tag">Beard</span></div><div class="as-footer"><div class="as-price">From <strong>₹700</strong></div><button class="as-book" onclick="openBooking('Colaba & Curl')">Book Now</button></div></div></div>
+    <div class="as-card"><div class="as-img-wrap"><img class="as-img" src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=600&q=80" alt=""><span class="as-badge">New</span></div><div class="as-body"><div class="as-name">Parel Glow Studio</div><div class="as-loc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Lower Parel</div><div class="as-stars"><span class="as-stars-val">★★★★★</span><span class="as-stars-label">5.0 · 64</span></div><div class="as-tags"><span class="as-tag">Skin</span><span class="as-tag">Glow</span></div><div class="as-footer"><div class="as-price">From <strong>₹600</strong></div><button class="as-book" onclick="openBooking('Parel Glow Studio')">Book Now</button></div></div></div>
+    <div class="as-card"><div class="as-img-wrap"><img class="as-img" src="https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80" alt=""><span class="as-badge">Premium</span></div><div class="as-body"><div class="as-name">Worli & Weft</div><div class="as-loc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>Worli</div><div class="as-stars"><span class="as-stars-val">★★★★½</span><span class="as-stars-label">4.6 · 155</span></div><div class="as-tags"><span class="as-tag">Hair</span><span class="as-tag">Makeup</span></div><div class="as-footer"><div class="as-price">From <strong>₹850</strong></div><button class="as-book" onclick="openBooking('Worli & Weft')">Book Now</button></div></div></div>
+  </div>
+</div>
+
+<!-- ░░ SECTION 3 — SERVICES CARD DEAL ░░ -->
+<div class="deal-outer services-outer" id="services-section">
+  <div class="deal-inner" id="servicesInner">
+
+    <div class="deal-left">
+      <p class="deal-eyebrow">What We Offer</p>
+      <h2 class="deal-title">Services Built<br>for <em>Mumbai</em></h2>
+      <p class="deal-desc">From a quick blowout in Bandra to a full bridal transformation — every service on VELOUR. is by the city's finest hands.</p>
+      <button class="deal-cta" onclick="openBooking()">
+        Book a Service
+        <span class="cta-arrow">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </button>
+      <div class="deal-counter">
+        <div class="deal-count-current" id="servicesCountNum">01</div>
+        <span class="deal-count-sep">—</span>
+        <div class="deal-count-total">03</div>
+      </div>
+    </div>
+
+    <div class="deal-right" id="servicesRight">
+
+      <div class="deal-card" id="svcCard0">
+        <span class="dc-num">01 / 03</span>
+        <div class="dc-title">Hair<br><em>Styling</em></div>
+        <div class="dc-sub">Precision cuts, transformative colour, and expert blowouts — tailored to what Mumbai actually wears.</div>
+        <div class="dc-detail"><span class="dc-dot"></span>Haircut · Colour · Keratin · Blowout</div>
+        <button class="dc-book" onclick="openBooking()">Book Now →</button>
+      </div>
+
+      <div class="deal-card" id="svcCard1">
+        <span class="dc-num">02 / 03</span>
+        <div class="dc-title">Nails &amp;<br><em>Wellness</em></div>
+        <div class="dc-sub">Gel, art, spa, and deep treatments — the kind of care that makes the city feel far away.</div>
+        <div class="dc-detail"><span class="dc-dot"></span>Manicure · Pedicure · Spa · Massage</div>
+        <button class="dc-book" onclick="openBooking()">Book Now →</button>
+      </div>
+
+      <div class="deal-card" id="svcCard2">
+        <span class="dc-num">03 / 03</span>
+        <div class="dc-title">Bridal<br><em>Atelier</em></div>
+        <div class="dc-sub">Full packages from trials to the wedding morning — by Mumbai's most sought-after bridal artists.</div>
+        <div class="dc-detail"><span class="dc-dot"></span>Makeup · Hair · Draping · Full Package</div>
+        <button class="dc-book" onclick="openBooking()">Book Now →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ░░ BOOKING MODAL ░░ -->
+<div class="bmodal-wrap" id="bookingModal">
+  <div class="bmodal">
+    <button class="bm-x" onclick="closeBooking()">✕</button>
+    <p class="bm-ey">Reserve a Slot</p>
+    <h2 class="bm-title" id="bmTitle">Book an Appointment</h2>
+    <p class="bm-sub">Instant confirmation · No deposit required</p>
+    <div class="bm-field"><label>Full Name</label><input type="text" id="bmName" placeholder="Your full name"/></div>
+    <div class="bm-field"><label>Mobile</label><input type="tel" id="bmPhone" placeholder="+91 98765 43210"/></div>
+    <div class="bm-row">
+      <div class="bm-field"><label>Service</label>
+        <select id="bmService">
+          <option value="">Select</option>
+          <option>Hair Colour</option><option>Haircut & Style</option>
+          <option>Bridal Makeup</option><option>Spa & Massage</option>
+          <option>Nails & Art</option><option>Facial & Skin</option>
+          <option>Men's Grooming</option>
+        </select>
+      </div>
+      <div class="bm-field"><label>Date</label><input type="date" id="bmDate"/></div>
+    </div>
+    <button class="bm-confirm" onclick="confirmBooking()">Confirm Booking</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ══ PRELOADER ══ */
+var pFill=document.getElementById('preFill'),pNum=document.getElementById('preNum'),pEl=document.getElementById('preloader'),n=0,pInt;
+pInt=setInterval(function(){
+  n+=Math.random()*3.5+1.2;
+  if(n>=100){n=100;clearInterval(pInt);setTimeout(doneLoading,500);}
+  pFill.style.width=n+'%';pNum.textContent=Math.floor(n);
+},55);
+function doneLoading(){
+  pEl.classList.add('pre-exit');
+  setTimeout(function(){pEl.classList.add('gone');startHeroEntrance();},720);
+}
+
+/* ══ HERO ENTRANCE ══ */
+function startHeroEntrance(){
+  gsap.to('#mainNav',{opacity:1,duration:0.6,ease:'power2.out'});
+  gsap.set(['.hero-eyebrow','.hero-title','.hero-sub','.hero-rule','.scroll-enter'],{opacity:0});
+  var tl=gsap.timeline({delay:0.1});
+  tl.to('.hero-eyebrow',{opacity:1,duration:0.45,ease:'power3.out'})
+    .to('.hero-title',{opacity:1,duration:0.55,ease:'power3.out'},'-=0.25')
+    .to('.hero-sub',{opacity:0.85,duration:0.45,ease:'power3.out'},'-=0.25')
+    .to('.hero-rule',{opacity:1,duration:0.35},'-=0.2')
+    .to('.scroll-enter',{opacity:1,duration:0.35},'-=0.15');
+}
+
+/* ══ HERO PUSH-IN ══ */
+gsap.to('.hero-img',{scale:1.18,y:'-6%',ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom bottom',scrub:1.4}});
+gsap.to('.hero-content',{opacity:0,y:-24,ease:'power2.in',scrollTrigger:{trigger:'.hero',start:'18% top',end:'38% top',scrub:true}});
+gsap.to('.scroll-enter',{opacity:0,scrollTrigger:{trigger:'.hero',start:'8% top',end:'20% top',scrub:true}});
+
+/* ══ NAV ══ */
+window.addEventListener('scroll',function(){
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ══ MOBILE MENU ══ */
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach(function(a){
+  a.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('open');});
+});
+
+/* ══════════════════════════════════════════════════
+   CARD DEAL ENGINE — exact Pieter behaviour
+   
+   What the screenshots show:
+   - Card 1 sits centred on right side (slightly tilted)
+   - Card 2 slides up from below-right, landing on top
+     of card 1 with a different tilt (fan effect)
+   - Card 3 slides up similarly, fanning further
+   - Previous cards stay visible, peeking behind
+   - scrub:true so position tied to scroll position
+══════════════════════════════════════════════════ */
+function initDealSection(outerID, cards, countEl){
+  var outer = document.getElementById(outerID);
+  if(!outer) return;
+
+  // isMobile: skip GSAP, use static stack
+  if(window.innerWidth <= 768) return;
+
+  /* Initial resting tilts for each card in the deck.
+     Card 0: slight left tilt (first card dealt, sits back)
+     Card 1: no tilt (comes in straight, lands on top)
+     Card 2: slight right tilt (last card, fans right)
+  */
+  var restRotations = [-4, -1.5, 2.5];
+  var restOffsets   = [-24, 0, 20]; // px horizontal offset when all landed
+
+  /* Starting state: card 0 in place, cards 1+2 waiting below */
+  gsap.set(cards[0], {y:0, rotation:restRotations[0], x:restOffsets[0], zIndex:1});
+  gsap.set(cards[1], {y:'110%', rotation:restRotations[1], x:restOffsets[1], zIndex:2});
+  gsap.set(cards[2], {y:'110%', rotation:restRotations[2], x:restOffsets[2], zIndex:3});
+
+  ScrollTrigger.create({
+    trigger: outer,
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 0.8,
+    onUpdate: function(self){
+      var p = self.progress; // 0 → 1
+
+      /* ── Phase 1 (0 → 0.4): card 1 deals in ── */
+      if(p <= 0.4){
+        var t = p / 0.4; // 0→1
+        var ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t; // easeInOut
+        gsap.set(cards[1], {y: (1-ease)*110+'%'});
+        if(countEl) countEl.textContent = t > 0.5 ? '02' : '01';
+      }
+
+      /* ── Phase 2 (0.4 → 0.75): card 1 fully landed, card 2 deals in ── */
+      else if(p <= 0.75){
+        gsap.set(cards[1], {y:0});
+        var t = (p - 0.4) / 0.35;
+        var ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+        gsap.set(cards[2], {y: (1-ease)*110+'%'});
+        if(countEl) countEl.textContent = t > 0.5 ? '03' : '02';
+      }
+
+      /* ── Phase 3 (0.75 → 1): all landed, hold ── */
+      else {
+        gsap.set(cards[1], {y:0});
+        gsap.set(cards[2], {y:0});
+        if(countEl) countEl.textContent = '03';
+      }
+
+      /* Card 0 always stays put */
+      gsap.set(cards[0], {y:0});
+    }
+  });
+}
+
+/* Init both sections after DOM ready */
+initDealSection('salons-section',
+  [document.getElementById('spCard0'), document.getElementById('spCard1'), document.getElementById('spCard2')],
+  document.getElementById('salonsCountNum')
+);
+initDealSection('services-section',
+  [document.getElementById('svcCard0'), document.getElementById('svcCard1'), document.getElementById('svcCard2')],
+  document.getElementById('servicesCountNum')
+);
+
+/* ══ NAV ACTIVE ══ */
+function setNavActive(el){
+  document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.remove('active');});
+  if(el) el.classList.add('active');
+}
+document.getElementById('navSalons').addEventListener('click',function(e){
+  e.preventDefault();setNavActive(this);
+  document.getElementById('salons-section').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('navServices').addEventListener('click',function(e){
+  e.preventDefault();setNavActive(this);
+  document.getElementById('services-section').scrollIntoView({behavior:'smooth'});
+});
+
+/* ══ EXPLORE ALL ══ */
+document.getElementById('exploreBtn').addEventListener('click',function(e){
+  e.preventDefault();
+  var sec=document.getElementById('all-salons');
+  sec.classList.add('visible');
+  setTimeout(function(){sec.scrollIntoView({behavior:'smooth'});},60);
+  setNavActive(document.getElementById('navSalons'));
+});
+document.getElementById('asBack').addEventListener('click',function(){
+  document.getElementById('all-salons').classList.remove('visible');
+  document.getElementById('salons-section').scrollIntoView({behavior:'smooth'});
+});
+
+/* ══ ACCOUNT ══ */
+document.getElementById('navAccount').addEventListener('click',function(e){
+  e.preventDefault();document.getElementById('accountModal').classList.toggle('open');
+});
+document.getElementById('amClose').addEventListener('click',function(){
+  document.getElementById('accountModal').classList.remove('open');
+});
+document.getElementById('accountModal').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('open');
+});
+document.querySelectorAll('.am-tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.am-tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('.am-panel').forEach(function(p){p.classList.remove('active');});
+    this.classList.add('active');
+    document.getElementById('tab-'+this.dataset.tab).classList.add('active');
+  });
+});
+function handleAuth(){document.getElementById('accountModal').classList.remove('open');}
+
+/* ══ BOOKING ══ */
+window.openBooking=function(name){
+  document.getElementById('bmTitle').textContent=name?'Book — '+name:'Book an Appointment';
+  var d=new Date().toISOString().split('T')[0];
+  document.getElementById('bmDate').min=d;document.getElementById('bmDate').value=d;
+  document.getElementById('bookingModal').classList.add('open');
+};
+window.closeBooking=function(){document.getElementById('bookingModal').classList.remove('open');};
+document.getElementById('bookingModal').addEventListener('click',function(e){if(e.target===this)closeBooking();});
+window.confirmBooking=function(){
+  var name=document.getElementById('bmName').value.trim();
+  var phone=document.getElementById('bmPhone').value.trim();
+  if(!name||!phone) return;
+  closeBooking(); 
+  document.getElementById('bmName').value='';
+  document.getElementById('bmPhone').value='';
+};
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeBooking();document.getElementById('accountModal').classList.remove('open');}
+});
+</script>
+</body>
+</html>

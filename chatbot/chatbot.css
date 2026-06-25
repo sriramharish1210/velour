@@ -1,0 +1,40 @@
+#chat-toggle{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  background: red;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 99999;
+}
+
+#chat-widget{
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  height: 400px;
+  background: white;
+  color: black;
+  z-index: 99999;
+}
+
+.hidden{
+  display: none;
+}
+
+body { outline: 5px solid red; }
+
+#chat-toggle{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999999;
+  outline: 5px solid lime;
+}

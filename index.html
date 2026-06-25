@@ -32,6 +32,7 @@ body{background:var(--ink);color:var(--cream);font-family:'Manrope',sans-serif;o
 .pre-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width 0.05s linear}
 .pre-num{font-family:'Fraunces',serif;font-size:1rem;color:var(--gold);opacity:0.6;letter-spacing:0.1em}
 .pre-exit{animation:pOut 0.7s forwards}
+#preloader.pre-exit { pointer-events: none; }
 #preloader.gone{display:none}
 @keyframes pIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes pOut{from{opacity:1}to{opacity:0}}
@@ -407,8 +408,128 @@ nav.scrolled{background:rgba(18,14,11,0.96);backdrop-filter:blur(24px);padding:1
   .deal-left{padding:0 20px 40px}
   .deal-right{padding:0 20px}
 }
+
+/* ══ CHATBOT ══ */
+#chat-toggle{
+  position:fixed;bottom:28px;right:28px;
+  width:52px;height:52px;
+  background:linear-gradient(135deg,#5C1A2E,#7A2040);
+  border:1px solid rgba(201,169,110,0.35);
+  border-radius:50%;cursor:pointer;z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(92,26,46,0.5);
+  transition:all 0.3s;
+  pointer-events:all;
+}
+#chat-toggle:hover{transform:scale(1.08)}
+#chat-toggle svg{width:22px;height:22px;stroke:#E8D5A3;fill:none;stroke-width:1.8}
+#chat-widget{
+  position:fixed;bottom:92px;right:28px;
+  width:340px;height:480px;
+  background:#1C1510;
+  border:1px solid rgba(201,169,110,0.13);
+  border-radius:20px;
+  z-index:99998;
+  display:flex;flex-direction:column;
+  box-shadow:0 24px 64px rgba(0,0,0,0.7);
+  overflow:hidden;
+  transition:opacity 0.3s,transform 0.3s;
+  pointer-events:all;
+}
+#chat-widget.hidden{opacity:0;pointer-events:none;transform:translateY(12px) scale(0.97)}
+.chat-head{
+  padding:18px 20px 14px;
+  border-bottom:1px solid rgba(201,169,110,0.13);
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(135deg,rgba(92,26,46,0.25),transparent);
+  flex-shrink:0;
+}
+.chat-head-title{font-family:'Fraunces',serif;font-weight:300;font-size:1rem;letter-spacing:0.06em;color:#F5F0E8}
+.chat-head-sub{font-size:8.5px;letter-spacing:0.16em;text-transform:uppercase;color:#C9A96E;opacity:0.7;margin-top:2px}
+.chat-close{background:none;border:none;color:rgba(245,240,232,0.5);cursor:pointer;font-size:1rem;transition:color 0.2s}
+.chat-close:hover{color:#C9A96E}
+#chat-box{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:10px;
+  scrollbar-width:none;
+}
+#chat-box::-webkit-scrollbar{display:none}
+#chat-box .user,#chat-box .bot{
+  max-width:85%;padding:10px 14px;
+  font-size:12px;line-height:1.65;
+  border-radius:12px;
+}
+#chat-box .user{
+  align-self:flex-end;
+  background:linear-gradient(135deg,#5C1A2E,#7A2040);
+  color:#E8D5A3;
+  border-bottom-right-radius:4px;
+}
+#chat-box .bot{
+  align-self:flex-start;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(201,169,110,0.13);
+  color:#F5F0E8;
+  border-bottom-left-radius:4px;
+}
+#chat-box .bot strong,#chat-box .user strong{
+  display:block;font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;
+  margin-bottom:4px;opacity:0.6;font-weight:500;
+}
+.chat-input-row{
+  display:flex;padding:12px;
+  border-top:1px solid rgba(201,169,110,0.13);
+  flex-shrink:0;
+  background:rgba(0,0,0,0.2);
+}
+#userInput{
+  flex:1;padding:10px 14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,169,110,0.13);
+  border-right:none;
+  border-radius:8px 0 0 8px;
+  color:#F5F0E8;
+  font-family:'Manrope',sans-serif;
+  font-size:12px;outline:none;
+}
+#userInput::placeholder{color:rgba(245,240,232,0.25)}
+#sendBtn{
+  padding:10px 16px;
+  background:linear-gradient(135deg,#5C1A2E,#7A2040);
+  border:1px solid rgba(201,169,110,0.25);
+  border-radius:0 8px 8px 0;
+  color:#E8D5A3;font-size:14px;cursor:pointer;
+}
+#preloader.pre-exit{pointer-events:none}
+@media(max-width:768px){
+  #chat-widget{width:calc(100vw - 32px);right:16px;bottom:88px}
+  #chat-toggle{right:16px;bottom:16px}
+}
+
 </style>
 </head>
+
+<!-- ░░ CHATBOT — paste just before </body> ░░ -->
+<button id="chat-toggle" onclick="toggleChat()" aria-label="Open stylist chat">
+  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div id="chat-widget" class="hidden">
+  <div class="chat-head">
+    <div>
+      <div class="chat-head-title">VELOUR. Stylist</div>
+      <div class="chat-head-sub">AI Occasion Assistant</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="chat-box">
+    <div class="bot"><strong>Velour</strong>Hello. Tell me your occasion — wedding, party, date night, or office — and I'll style your look.</div>
+  </div>
+  <div class="chat-input-row">
+    <input id="userInput" type="text" placeholder="e.g. bridal look for December…" onkeydown="if(event.key==='Enter')sendChatMessage()"/>
+    <button id="sendBtn" onclick="sendChatMessage()">→</button>
+  </div>
+</div>
+
 <body>
 
 <!-- ░░ PRELOADER ░░ -->
@@ -898,7 +1019,57 @@ window.confirmBooking=function(){
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){closeBooking();document.getElementById('accountModal').classList.remove('open');}
 });
+
+// CHATBOT WINDOW
+(function(){
+var API_KEY = ""; /* paste your Gemini API key here */
+var ctx={occasion:null,vibe:null,service:null};
+
+window.toggleChat=function(){
+  var w=document.getElementById('chat-widget');
+  w.classList.toggle('hidden');
+  if(!w.classList.contains('hidden')) document.getElementById('userInput').focus();
+};
+
+window.sendChatMessage=async function(){
+  var input=document.getElementById('userInput');
+  var chatBox=document.getElementById('chat-box');
+  var msg=input.value.trim();
+  if(!msg)return;
+  addMsg('user',msg); input.value='';
+  var t=msg.toLowerCase();
+  if(t.includes('wedding'))ctx.occasion='wedding';
+  if(t.includes('party'))ctx.occasion='party';
+  if(t.includes('date'))ctx.occasion='date night';
+  if(t.includes('office'))ctx.occasion='formal';
+  if(t.includes('hair')||t.includes('cut'))ctx.service='haircut';
+  if(t.includes('color'))ctx.service='hair coloring';
+  if(t.includes('spa'))ctx.service='spa';
+  if(t.includes('glam'))ctx.vibe='glamorous';
+  if(t.includes('simple'))ctx.vibe='minimal';
+  var typing=addMsg('bot','<em style="opacity:0.5">Styling your look…</em>');
+  var prompt='You are Velour Occasion Stylist AI — a luxury salon stylist in Mumbai. Be concise and opinionated. Context: occasion='+( ctx.occasion||'unknown')+', vibe='+(ctx.vibe||'unknown')+', service='+(ctx.service||'unknown')+'. User: '+msg+'. Reply as stylist, then ask one follow-up question.';
+  try{
+    var res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+API_KEY,
+      {method:'POST',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({contents:[{role:'user',parts:[{text:prompt}]}]})});
+    var data=await res.json();
+    typing.remove();
+    addMsg('bot',data.candidates?.[0]?.content?.parts?.[0]?.text||"Couldn't style that right now.");
+  }catch(e){typing.remove();addMsg('bot','Connection issue. Try again.');}
+  chatBox.scrollTop=chatBox.scrollHeight;
+};
+
+function addMsg(type,text){
+  var chatBox=document.getElementById('chat-box');
+  var d=document.createElement('div');
+  d.className=type;
+  d.innerHTML='<strong>'+(type==='user'?'You':'Velour')+'</strong>'+text;
+  chatBox.appendChild(d);
+  chatBox.scrollTop=chatBox.scrollHeight;
+  return d;
+}
+})();
 </script>
-</div>
 </body>
 </html>
